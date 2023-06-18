@@ -16,7 +16,6 @@
     ],
     "require": {
         "php": ">=7.2",
-        "qcloud_sts/qcloud-sts-sdk": "3.0.*",
         "qcloud/cos-sdk-v5": "^2.6"
     }
 }

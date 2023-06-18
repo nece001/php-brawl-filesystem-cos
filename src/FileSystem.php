@@ -7,6 +7,7 @@ use Nece\Brawl\ConfigAbstract;
 use Nece\Brawl\FileSystem\FileSystemAbstract;
 use Nece\Brawl\FileSystem\FileSystemException;
 use Qcloud\Cos\Client;
+use QCloud\COSSTS\Sts;
 use Throwable;
 
 class FileSystem extends FileSystemAbstract
@@ -390,14 +391,14 @@ class FileSystem extends FileSystemAbstract
      * @DateTime 2023-06-18
      *
      * @param string $uri
-     * @param int $expires
+     * @param int $expires 过期时间（秒）
      *
      * @return string
      */
-    public function buildUrl($uri, $expires = null)
+    public function buildUrl(string $uri, $expires = null)
     {
         if ($expires) {
-            return $this->getClient()->getObjectUrl($this->bucket, $uri, '+' . $expires . ' minutes');
+            return $this->getClient()->getObjectUrl($this->bucket, $uri, '+' . intval($expires / 60) . ' minutes');
         } else {
             return $this->getClient()->getObjectUrlWithoutSign($this->bucket, $uri);
             // return parent::buildUrl($uri);
@@ -411,17 +412,24 @@ class FileSystem extends FileSystemAbstract
      * @DateTime 2023-06-17
      * 
      * @param string $path 相对路径
+     * @param int $expires 过期时间（秒）
      *
      * @return string
      */
     public function buildPreSignedUrl(string $path, $expires = null): string
     {
-        $signedUrl = $this->getClient()->getPreSignedUrl('getObject', array(
+        $conf = array(
             'Bucket' => $this->bucket, //存储桶，格式：BucketName-APPID
             'Key' => $path, //对象在存储桶中的位置，即对象键
             'Params' => array(), //http 请求参数，传入的请求参数需与实际请求相同，能够防止用户篡改此HTTP请求的参数,默认为空
             'Headers' => array(), //http 请求头部，传入的请求头部需包含在实际请求中，能够防止用户篡改签入此处的HTTP请求头部,默认已签入host
-        ), '+10 minutes'); //签名的有效时间
+        );
+
+        if ($expires) {
+            $signedUrl = $this->getClient()->getPreSignedUrl('getObject', $conf, '+' . intval($expires / 60) . ' minutes'); //签名的有效时间
+        } else {
+            $signedUrl = $this->getClient()->getPreSignedUrl('getObject', $conf);
+        }
 
         return $signedUrl;
     }
