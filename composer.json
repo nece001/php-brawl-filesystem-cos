@@ -1,0 +1,20 @@
+{
+    "name": "nece001/php-brawl-filesystem-cos",
+    "description": "php 文件系统信基础服务项目(腾讯云cos)",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Nece\\Brawl\\FileSystem\\Cos\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "nece001",
+            "email": "nece001@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    }
+}
