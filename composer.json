@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": ">=7.2",
+        "nece001/php-brawl-filesystem": "^1.0",
         "qcloud/cos-sdk-v5": "^2.6"
     }
 }
