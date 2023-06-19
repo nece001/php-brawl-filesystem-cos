@@ -7,7 +7,6 @@ use Nece\Brawl\ConfigAbstract;
 use Nece\Brawl\FileSystem\FileSystemAbstract;
 use Nece\Brawl\FileSystem\FileSystemException;
 use Qcloud\Cos\Client;
-use QCloud\COSSTS\Sts;
 use Throwable;
 
 class FileSystem extends FileSystemAbstract
